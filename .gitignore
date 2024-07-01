@@ -1,0 +1,12 @@
+*.pyc
+.venv
+venv
+# SQLite databases
+*.db
+# editor debris
+*~
+.#*
+._*
+.*.sw?
+# OS debris
+.DS_Store
