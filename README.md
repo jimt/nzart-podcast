@@ -1,6 +1,6 @@
 # NZART Podcast
 
-These scripts are used to generate the NZART podcast feed.
+These scripts are used to generate an NZART podcast feed.
 
 ## add_episode.py
 
