@@ -19,11 +19,9 @@ def convert_seconds(seconds):
     seconds = seconds % 3600
     minutes = seconds // 60
     seconds = seconds % 60
-    print(hours, minutes, seconds)
     return f'{hours:02d}:{minutes:02d}:{seconds:02d}'
 
 def last_sunday(year, month):
-    print (f'Last Sunday of year: {year}, month: {month}')
     if month == 12:
         month = 1
         year += 1
@@ -38,7 +36,6 @@ def last_sunday(year, month):
 # using the pathname as the key, insert the episode into the database
 def add_episode(pathname, cur):
     months = ['feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
-    print("=======", pathname, "=======")
     try:
         mu = MP3(pathname)
         #mu = mutagen.File(pathname)
@@ -46,17 +43,11 @@ def add_episode(pathname, cur):
         print("HeaderNotFoundError")
         return
     stats = os.stat(pathname)
-    print(mu)
-    print('-----')
-    print(mu.keys())
-    print('-----')
     pathname = os.path.relpath(pathname)
     [year, month] = pathname.split('/')
     month = month.replace('.mp3', '')
-    print(f'Try to find episode year: {year}, month: {month}')
     try:
         episode = months.index(month) + 1
-        print (f'episode: {episode}')
         pubdate = last_sunday(int(year), episode + 1)
     except ValueError:
         episode = 0
@@ -86,7 +77,6 @@ def add_episode(pathname, cur):
     if 'TPE1' in mu.keys():
         ep['artist'] = mu['TPE1'].text[0]
     if 'TPOS' in mu.keys():
-        print (mu['TPOS'])
         ep['episode'] = mu['TPOS'].text[0]
     if 'COMM::eng' in mu.keys():
         ep['desc'] = mu['COMM::eng'].text[0]
@@ -100,7 +90,6 @@ def add_episode(pathname, cur):
         ep['guid'] = ep['url']
     else:
         ep['guid'] = f'NZART Official Broadcast {year} {month.replace('.mp3', '')} {ep['episode']} 00'
-    print(ep)
     cur = con.cursor()
     cur.execute('''REPLACE INTO episodes (pathname, title, artist, link, guid, desc, duration,
                     series, episode, url, size, pubdate)
